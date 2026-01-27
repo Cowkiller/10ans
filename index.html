@@ -984,6 +984,7 @@
                 <h3>Comment ça marche ?</h3>
                 <p>C'est participatif ! Chacun apporte un plat à partager.</p>
                 <p style="margin-top: 0.5rem;">Nous fournissons les boissons 🍷🥤</p>
+                <p style="margin-top: 0.5rem;">🔥 Un barbecue sera à disposition !</p>
             </div>
 
             <div class="info-card fade-in">
@@ -1011,6 +1012,40 @@
             <a href="https://waze.com/ul?ll=48.025123595926026,-1.3659528464307695&navigate=yes" target="_blank" class="map-link">
                 🚗 Waze
             </a>
+        </div>
+
+        <!-- Plan du lieu -->
+        <div class="plan-lieu fade-in" style="margin-top: 3rem;">
+            <h3 style="font-family: 'Josefin Sans', sans-serif; font-size: 1.5rem; color: var(--vert-foret); text-align: center; margin-bottom: 1.5rem;">📋 Plan du lieu</h3>
+            <div style="background: var(--blanc-casse); border: 2px dashed var(--vert-mousse); border-radius: 20px; padding: 2rem; text-align: center;">
+                <div style="background: var(--creme-fonce); border-radius: 15px; padding: 3rem; margin-bottom: 1.5rem;">
+                    <!-- <p style="color: var(--brun-terre); font-style: italic;">🗺️ Plan à venir...</p>-->
+                    <!-- EMPLACEMENT POUR LE PLAN : remplacer ce bloc par une image -->
+                    <img src="images/plan-lieu.png" alt="Plan du lieu" style="max-width: 100%; border-radius: 10px;"> 
+                </div>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-top: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.5rem;">🎉</span>
+                        <span>Réception</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.5rem;">⛺</span>
+                        <span>Camping</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.5rem;">🚗</span>
+                        <span>Parking</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.5rem;">🚻</span>
+                        <span>Commodités</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.5rem;">🔥</span>
+                        <span>Barbecue</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1156,7 +1191,7 @@
                 <h3>🚗 Proche (5-10 minutes)</h3>
                 <div class="hebergement-item">
                     <span class="hebergement-name">Les Épinays</span>
-                    <p class="hebergement-details">Piré-sur-Seiche • Ch. d'hôtes + Gîte + Salle • 7-12 pers. • 70-100€/nuit • <a href="https://www.gites-chambres-hotes-lesepinays.fr/" target="_blank">gites-chambres-hoteslesepinays.fr</a></p>
+                    <p class="hebergement-details">Piré-sur-Seiche • Ch. d'hôtes + Gîte + Salle • 7-12 pers. • 70-100€/nuit • <a href="http://gites-chambres-hoteslesepinays.fr" target="_blank">gites-chambres-hoteslesepinays.fr</a></p>
                 </div>
                 <div class="hebergement-item">
                     <span class="hebergement-name">Gîte groupe Les Épinays</span>
@@ -1328,12 +1363,12 @@
             <div class="contact-card fade-in">
                 <h3>Alix</h3>
                 <a href="tel:0662208142">📞 06 62 20 81 42</a>
-                <a href="mailto:alix.tran@gmail.com">✉️ alix.tran@gmail.com</a>
+                <a href="/cdn-cgi/l/email-protection#43222f2a3b6d3731222d03242e222a2f6d202c2e">✉️ <span class="__cf_email__" data-cfemail="6405080d1c4a1016050a240309050d084a070b09">[email&#160;protected]</span></a>
             </div>
             <div class="contact-card fade-in">
                 <h3>Julien</h3>
                 <a href="tel:0672034313">📞 06 72 03 43 13</a>
-                <a href="mailto:julien.tuvache@gmail.com">✉️ julien.tuvache@gmail.com</a>
+                <a href="/cdn-cgi/l/email-protection#056f70696c606b2b71707364666d60456268646c692b666a68">✉️ <span class="__cf_email__" data-cfemail="c3a9b6afaaa6adedb7b6b5a2a0aba683a4aea2aaafeda0acae">[email&#160;protected]</span></a>
             </div>
         </div>
     </section>
@@ -1343,7 +1378,7 @@
         <p>Alix & Julien 💕 27 août 2016 - 2026</p>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Compte à rebours
         function updateCountdown() {
             const eventDate = new Date('2026-08-22T14:00:00').getTime();
@@ -1391,7 +1426,6 @@
         document.querySelector('input[name="_next"]').value = currentUrl + '?success=true';
 
         // Afficher message de succès si retour de FormSubmit
-        // Afficher message de succès si retour de FormSubmit
         if (window.location.search.includes('success=true')) {
             document.getElementById('success-msg').classList.add('show');
             document.getElementById('rsvp-form').style.display = 'none';
@@ -1400,5 +1434,4 @@
         }
     </script>
 </body>
-</html>															  
-   
+</html>
