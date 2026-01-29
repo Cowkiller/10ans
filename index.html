@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Josefin+Sans:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Uploadcare Widget -->
+    <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
     <style>
         :root {
             --vert-foret: #2D5A3D;
@@ -252,6 +254,70 @@
             color: var(--brun-terre);
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        /* Jauge de réponses */
+        .response-tracker {
+            background: var(--blanc-casse);
+            border: 3px solid var(--vert-mousse);
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            margin: 2rem auto;
+            max-width: 500px;
+            box-shadow: 0 6px 20px var(--ombre);
+        }
+
+        .response-tracker h3 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 1.1rem;
+            color: var(--vert-foret);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .progress-container {
+            background: var(--creme-fonce);
+            border-radius: 15px;
+            height: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--vert-sauge), var(--vert-foret));
+            height: 100%;
+            border-radius: 15px;
+            transition: width 1s ease-out;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 0.8rem;
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 1.1rem;
+            color: var(--vert-foret);
+            font-weight: 600;
+        }
+
+        .progress-text span {
+            font-size: 1.5rem;
         }
 
         /* Intro */
@@ -584,9 +650,253 @@
             font-size: 0.95rem;
         }
 
+        .form-deadline {
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: 600;
+            color: var(--vert-foret);
+            font-family: 'Josefin Sans', sans-serif;
+        }
+
+        /* ============================================ */
+        /* SECTION PHOTOS - GALERIE & UPLOAD */
+        /* ============================================ */
+        #photos {
+            background: var(--blanc-casse);
+        }
+
+        .photos-intro {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Zone d'upload */
+        .upload-zone {
+            background: var(--creme);
+            border: 3px dashed var(--vert-mousse);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            border-color: var(--vert-foret);
+            background: var(--creme-fonce);
+            transform: scale(1.02);
+        }
+
+        .upload-zone.dragover {
+            border-style: solid;
+            box-shadow: 0 0 30px rgba(45, 90, 61, 0.3);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .upload-zone h3 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 1.4rem;
+            color: var(--vert-foret);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-zone p {
+            color: var(--brun-terre);
+            margin-bottom: 1rem;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--vert-sauge), var(--vert-foret));
+            color: var(--blanc-casse);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-family: 'Josefin Sans', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1.1rem;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(45, 90, 61, 0.3);
+        }
+
+        /* Upload progress */
+        .upload-progress {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .upload-progress.active {
+            display: block;
+        }
+
+        .upload-progress-bar {
+            background: var(--creme-fonce);
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .upload-progress-fill {
+            background: linear-gradient(90deg, var(--vert-sauge), var(--vert-foret));
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .upload-status {
+            margin-top: 0.5rem;
+            font-family: 'Josefin Sans', sans-serif;
+            color: var(--vert-foret);
+        }
+
+        /* Galerie photos */
+        .gallery-container {
+            margin-top: 2rem;
+        }
+
+        .gallery-title {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 1.5rem;
+            color: var(--vert-foret);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px var(--ombre);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(45, 90, 61, 0.8));
+            color: var(--blanc-casse);
+            padding: 1rem;
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 0.9rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            transform: translateY(0);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 10px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .lightbox-prev { left: -60px; }
+        .lightbox-next { right: -60px; }
+
+        /* Empty gallery state */
+        .gallery-empty {
+            text-align: center;
+            padding: 3rem;
+            color: var(--brun-terre);
+            font-style: italic;
+        }
+
+        .gallery-empty-icon {
+            font-size: 4rem;
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+
         /* Activités */
         #activites {
-            background: var(--blanc-casse);
+            background: linear-gradient(180deg, var(--creme) 0%, var(--creme-fonce) 100%);
         }
 
         .activites-grid {
@@ -597,7 +907,7 @@
         }
 
         .activite-card {
-            background: var(--creme);
+            background: var(--blanc-casse);
             border-radius: 20px;
             padding: 1.5rem;
             text-align: center;
@@ -625,7 +935,7 @@
 
         /* Hébergements */
         #hebergements {
-            background: linear-gradient(180deg, var(--creme) 0%, var(--creme-fonce) 100%);
+            background: linear-gradient(180deg, var(--creme-fonce) 0%, var(--creme) 100%);
         }
 
         .hebergement-intro {
@@ -757,8 +1067,8 @@
             }
 
             nav a {
-                font-size: 1rem;
-                padding: 0.4rem 0.7rem;
+                font-size: 0.9rem;
+                padding: 0.4rem 0.6rem;
             }
 
             .timeline::before {
@@ -782,10 +1092,6 @@
             }
 
             .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .form-row-3 {
                 grid-template-columns: 1fr;
             }
 
@@ -813,6 +1119,18 @@
             .form-container {
                 padding: 1.5rem;
             }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .lightbox-nav {
+                font-size: 2rem;
+                padding: 0.5rem;
+            }
+
+            .lightbox-prev { left: 10px; }
+            .lightbox-next { right: 10px; }
         }
 
         /* Animation d'entrée */
@@ -848,6 +1166,36 @@
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--vert-foret);
+            color: var(--blanc-casse);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            font-family: 'Josefin Sans', sans-serif;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.error {
+            background: #c0392b;
+        }
+
+        .toast.success {
+            background: var(--vert-foret);
+        }
     </style>
 </head>
 <body>
@@ -858,6 +1206,7 @@
             <li><a href="#histoire">Notre Histoire</a></li>
             <li><a href="#infos">Infos Pratiques</a></li>
             <li><a href="#inscription">S'inscrire</a></li>
+            <!-- <li><a href="#photos">Photos</a></li>-->
             <li><a href="#activites">Activités</a></li>
             <li><a href="#hebergements">Hébergements</a></li>
             <li><a href="#contact">Contact</a></li>
@@ -895,9 +1244,18 @@
                 </div>
             </div>
 
+            <!-- Jauge de réponses -->
+            <div class="response-tracker fade-in">
+                <h3>📊 Réponses reçues</h3>
+                <div class="progress-container">
+                    <div class="progress-bar" id="response-progress" style="width: 0%"></div>
+                </div>
+                <p class="progress-text"><span id="response-count">0</span> / 100 réponses</p>
+            </div>
+
             <div class="intro-text">
                 <p>Il y a 10 ans, nous nous sommes dit oui entourés de ceux qu'on aime. Depuis, la vie nous a gâtés : un voyage de noces inoubliable au Vietnam, un déménagement en Bretagne, et surtout trois petits bonshommes qui remplissent notre maison de rires (et de bazar !).</p>
-                <p style="margin-top: 1rem;">Pour fêter cette belle décennie, nous vous invitons à une grande journée familiale et festive au Petit Monbouan. Ambiance décontractrée, champêtre, jeux de jardin... et vous pouvez même planter la tente !</p>
+                <p style="margin-top: 1rem;">Pour fêter cette belle décennie, nous vous invitons à une grande journée familiale et festive au Petit Monbouan. Ambiance décontractée, champêtre, jeux de jardin... et vous pouvez même planter la tente !</p>
             </div>
         </div>
     </section>
@@ -999,21 +1357,20 @@
         <div class="map-container fade-in">
             <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2675.1234567890123!2d-1.2847!3d47.9234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sLe%20Petit%20Monbouan%2C%2035680%20Moulins!5e0!3m2!1sfr!2sfr!4v1234567890123"
-                allowfullscreen="" 
-                loading="lazy" 
+                loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade">
             </iframe>
         </div>
 
         <div class="map-links">
-            <a href="https://www.google.com/maps/dir/?api=1&destination=Le+Petit+Monbouan,+35680+Moulins" target="_blank" class="map-link">
-                📍 Google Maps
+            <a href="https://www.google.com/maps/dir//Le+Petit+Monbouan,+35680+Moulins" target="_blank" class="map-link">
+                📍 Ouvrir dans Google Maps
             </a>
-            <a href="https://waze.com/ul?ll=48.025123595926026,-1.3659528464307695&navigate=yes" target="_blank" class="map-link">
-                🚗 Waze
+            <a href="https://waze.com/ul?ll=47.9234,-1.2847&navigate=yes" target="_blank" class="map-link">
+                🚗 Ouvrir dans Waze
             </a>
         </div>
-
+		
         <!-- Plan du lieu -->
         <div class="plan-lieu fade-in" style="margin-top: 3rem;">
             <h3 style="font-family: 'Josefin Sans', sans-serif; font-size: 1.5rem; color: var(--vert-foret); text-align: center; margin-bottom: 1.5rem;">🗺️ Plan du lieu</h3>
@@ -1051,82 +1408,131 @@
 
     <!-- Inscription -->
     <section id="inscription">
-        <h2>Je confirme ma venue !</h2>
+        <h2>On compte sur vous ?</h2>
         
-        <div class="form-container fade-in">
-            <form id="rsvp-form" action="https://formsubmit.co/alix.tran@gmail.com" method="POST">
-                <!-- Configuration FormSubmit -->
-                <input type="hidden" name="_cc" value="julien.tuvache@gmail.com">
-                <input type="hidden" name="_subject" value="🎉 Nouvelle inscription - 10 ans Alix & Julien">
+        <div class="form-container">
+            <form id="rsvp-form" action="https://formsubmit.co/therealcowkiller@gmail.com" method="POST">
+			<!-- <form id="rsvp-form" action="https://formsubmit.co/alix.tran@gmail.com" method="POST">-->		
+				<!-- Ajoute cette ligne pour le webhook -->
+				<input type="hidden" name="_webhook" value="https://hook.us2.make.com/i8q929rc1a37ql8cg2ug2j4fhaz6hoq8">                
+				<!-- Configuration FormSubmit -->
+                <input type="hidden" name="_subject" value="🎉 Nouvelle inscription - 10 ans de mariage !">
+                <!-- <input type="hidden" name="_cc" value="therealcowkiller@gmail.com">-->
                 <input type="hidden" name="_captcha" value="false">
                 <input type="hidden" name="_template" value="table">
                 <input type="hidden" name="_next" value="">
-                
+
                 <div class="form-group">
-                    <label for="name">Votre nom / Famille</label>
-                    <input type="text" id="name" name="Nom" required placeholder="Ex: Famille Dupont">
+                    <label for="nom">Votre nom / Famille</label>
+                    <input type="text" id="nom" name="nom" required placeholder="Ex: Famille Dupont">
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="adults">Adultes</label>
-                        <input type="number" id="adults" name="Adultes" min="0" value="1" required>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Nombre de personnes</label>
+                    <div class="form-row">
+                        <div>
+                            <input type="number" id="adultes" name="adultes" min="0" value="2" placeholder="Adultes">
+                            <small style="color: var(--brun-terre);">Adultes</small>
+                        </div>
+                        <div>
+                            <input type="number" id="enfants" name="enfants" min="0" value="0" placeholder="Enfants">
+                            <small style="color: var(--brun-terre);">Enfants</small>
+                        </div>
+                        <div>
+                            <input type="number" id="bebes" name="bebes" min="0" value="0" placeholder="Bébés">
+                            <small style="color: var(--brun-terre);">Bébés</small>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="children">Enfants</label>
-                        <input type="number" id="children" name="Enfants" min="0" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="babies">Bébés</label>
-                        <input type="number" id="babies" name="Bébés" min="0" value="0">
-                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email (pour vous recontacter si besoin)</label>
-                    <input type="email" id="email" name="Email" required placeholder="votre@email.com">
-                </div>
-
-                <div class="form-group">
-                    <label for="food">Qu'apportez-vous à manger ? (Réponse facultative)</label>
-                    <textarea id="food" name="Plat apporté" placeholder="Ex: Tarte aux pommes, quiche lorraine, salade composée..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Vous restez dormir ?</label>
+                    <label>Options</label>
                     <div class="checkbox-group">
-                        <input type="checkbox" id="camping" name="Camping" value="Oui">
-                        <label for="camping">Oui, on plante la tente ! ⛺</label>
+                        <input type="checkbox" id="camping" name="camping" value="oui">
+                        <label for="camping">⛺ On plante la tente sur place !</label>
                     </div>
                     <div class="checkbox-group">
-                        <input type="checkbox" id="brunch" name="Brunch dimanche" value="Oui">
-                        <label for="brunch">On reste pour le brunch du dimanche 🥐</label>
+                        <input type="checkbox" id="brunch" name="brunch" value="oui">
+                        <label for="brunch">🥐 On reste pour le brunch du dimanche</label>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="message">Un petit mot ? (allergies, questions...)</label>
-                    <textarea id="message" name="Message" placeholder="Dites-nous tout !"></textarea>
+                    <label for="plat">Quel plat apportez-vous ?</label>
+                    <input type="text" id="plat" name="plat" placeholder="Ex: Salade de quinoa, tarte aux pommes...">
                 </div>
 
-				<p class="form-note" style="margin-top: 0.5rem; font-weight: 600; color: var(--vert-foret);">📅 Merci de confirmer votre venue avant le 28 février 2026</p>
+                <div class="form-group">
+                    <label for="message">Un petit mot ? 💌</label>
+                    <textarea id="message" name="message" placeholder="Allergies alimentaires, message pour les mariés..."></textarea>
+                </div>
 
+                <button type="submit" class="submit-btn">🎉 Je confirme ma venue !</button>
 
-                <button type="submit" class="submit-btn">Envoyer ma confirmation 🎉</button>
+                <p class="form-deadline">📅 Merci de vous inscrire avant le 28 février 2026</p>
+                <p class="form-note">Vous recevrez un email de confirmation. N'hésitez pas à nous contacter si vous avez des questions !</p>
             </form>
 
-            <div class="success-message" id="success-msg">
-                🎉 Merci ! Votre réponse a bien été envoyée. On a hâte de vous voir !
+            <div class="success-message" id="success-message">
+                🎉 Merci pour votre inscription ! On a hâte de vous voir !
             </div>
-
-            <p class="form-note">Les informations ne sont visibles que par Alix et Julien.</p>
         </div>
     </section>
 
+    <!-- Section Photos -->
+    <!-- <section id="photos">
+        <h2>📸 Album Photo Partagé</h2>
+        
+        <p class="photos-intro">
+            Partagez vos plus beaux souvenirs de la journée ! Toutes les photos seront visibles par tous les invités.
+        </p>
+
+
+        <div class="upload-zone" id="upload-zone">
+            <div class="upload-icon">📷</div>
+            <h3>Déposez vos photos ici</h3>
+            <p>ou cliquez pour sélectionner des fichiers</p>
+            <button type="button" class="upload-btn" id="upload-btn">Choisir des photos</button>
+            <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+            
+            <div class="upload-progress" id="upload-progress">
+                <div class="upload-progress-bar">
+                    <div class="upload-progress-fill" id="upload-progress-fill" style="width: 0%"></div>
+                </div>
+                <p class="upload-status" id="upload-status">Upload en cours...</p>
+            </div>
+        </div>
+
+        <div class="gallery-container">
+            <h3 class="gallery-title">🖼️ Galerie des invités</h3>
+            
+            <div class="gallery-grid" id="gallery-grid">
+                <div class="gallery-empty" id="gallery-empty">
+                    <div class="gallery-empty-icon">📷</div>
+                    <p>Aucune photo pour l'instant...<br>Soyez le premier à partager !</p>
+                </div>
+            </div>
+        </div>
+    </section>-->
+
+    <!-- Lightbox pour les photos -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightbox-close">&times;</button>
+            <button class="lightbox-nav lightbox-prev" id="lightbox-prev">&#10094;</button>
+            <img src="" alt="Photo agrandie" id="lightbox-img">
+            <button class="lightbox-nav lightbox-next" id="lightbox-next">&#10095;</button>
+        </div>
+    </div>
+
     <!-- Activités -->
     <section id="activites">
-        <h2>Activités sur place</h2>
-        <p style="text-align: center; margin-bottom: 2rem;">Ambiance détente et jeux de jardin toute la journée !</p>
+        <h2>Au programme</h2>
         
         <div class="activites-grid">
             <div class="activite-card fade-in">
@@ -1153,10 +1559,6 @@
                 <div class="activite-icon">🎲</div>
                 <h3>Jeux de société</h3>
             </div>
-            <!-- <div class="activite-card fade-in">
-                <div class="activite-icon">💃</div>
-                <h3>Piste de danse</h3>
-            </div> -->
         </div>
     </section>
 
@@ -1164,63 +1566,65 @@
     <section id="hebergements">
         <h2>Où dormir ?</h2>
         
-        <p class="hebergement-intro">Vous venez de loin ? Pas de panique, plusieurs options s'offrent à vous !</p>
+        <p class="hebergement-intro">
+            La fête risque de se prolonger... Voici quelques options pour passer la nuit ! 
+        </p>
 
         <div class="camping-box fade-in">
             <h3>⛺ Option Camping (gratuit !)</h3>
-            <p>Plantez votre tente dans notre jardin et profitez de la fête jusqu'au bout de la nuit !</p>
-            <p style="margin-top: 0.5rem; font-style: italic;">Pensez à cocher la case dans le formulaire d'inscription.</p>
+            <p>Plantez votre tente directement chez nous ! Toilettes et point d'eau disponibles.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">N'oubliez pas d'apporter vos duvets et matelas !</p>
         </div>
 
         <div class="hebergements-list">
             <!-- Très proche (0-5 min) -->
             <div class="hebergement-category fade-in">
-                <h3>📍 Très proche (0-5 minutes)</h3>
+                <h3>🏡 Très proche (0-5 minutes)</h3>
                 <div class="hebergement-item">
                     <span class="hebergement-name">Les Stiers</span>
-                    <p class="hebergement-details">Piré-Chancé • Chambre d'hôtes (3 chambres) • 6-8 pers. • 55-65€/nuit (pdj inclus) • <a href="http://chambredhote-stiers-35.com" target="_blank">chambredhote-stiers-35.com</a></p>
+                    <p class="hebergement-details">Piré-Chancé • Ch. d'hôtes • 6-8 pers. (3 ch.) • 55-65€/nuit • chambredhote-stiers-35.com</p>
                 </div>
                 <div class="hebergement-item">
-                    <span class="hebergement-name">La petite maison de Marigné</span>
-                    <p class="hebergement-details">Moulins • Logement entier • 2 pers. • 135-145€/nuit • <a href="https://www.booking.com/hotel/fr/petite-maison-au-calme-moulins.fr.html" target="_blank">Booking.com</a></p>
+                    <span class="hebergement-name">Maison de campagne</span>
+                    <p class="hebergement-details">Moulins • Logement entier • 2 pers. • 60-70€/nuit • Booking.com</p>
                 </div>
             </div>
 
             <!-- Proche (5-10 min) -->
             <div class="hebergement-category fade-in">
-                <h3>🚗 Proche (5-10 minutes)</h3>
+                <h3>🏠 Proche (5-10 minutes)</h3>
                 <div class="hebergement-item">
-                    <span class="hebergement-name">Les Épinays</span>
-                    <p class="hebergement-details">Piré-sur-Seiche • Ch. d'hôtes + Gîte + Salle • 7-12 pers. • 70-100€/nuit • <a href="http://gites-chambres-hoteslesepinays.fr" target="_blank">gites-chambres-hoteslesepinays.fr</a></p>
+                    <span class="hebergement-name">Les Épinays - Chambres</span>
+                    <p class="hebergement-details">Piré-sur-Seiche • Ch. d'hôtes + Gîte • 7-12 pers. (5 ch.) • 70-100€/nuit • epinays.fr</p>
                 </div>
                 <div class="hebergement-item">
-                    <span class="hebergement-name">Gîte groupe Les Épinays</span>
-                    <p class="hebergement-details">Piré-sur-Seiche • Gîte de groupe • 45 pers. (avec salle) • Sur devis • Gîtes de France 35</p>
+                    <span class="hebergement-name">Les Épinays - Gîte groupe</span>
+                    <p class="hebergement-details">Piré-sur-Seiche • Grande capacité • 45 pers. avec salle • Sur devis • epinays.fr</p>
                 </div>
                 <div class="hebergement-item">
                     <span class="hebergement-name">La Rosalie</span>
-                    <p class="hebergement-details">Visseiche • Gîte + SPA • 10-12 pers. (4 ch.) 200m² • 150-200€/nuit • Gîtes de France 35</p>
+                    <p class="hebergement-details">Visseiche • Gîte + SPA privatif • 10-12 pers. (5 ch.) • 150-200€/nuit • larosalie-gite.fr</p>
                 </div>
                 <div class="hebergement-item">
                     <span class="hebergement-name">Le Clos Gagné</span>
-                    <p class="hebergement-details">Bais • Chambres chez l'habitant • 15 pers. (7 ch.) • 50-60€/ch. • gites.fr</p>
+                    <p class="hebergement-details">Bais • Chambres d'hôtes • 15 pers. (7 ch.) • 50-60€/ch. (pdj inclus) • leclosgagne.fr</p>
                 </div>
                 <div class="hebergement-item">
                     <span class="hebergement-name">Gîte La Rigaudière</span>
-                    <p class="hebergement-details">Le Theil-de-Bretagne • Gîte + Ch. d'hôtes + piscine • 8 pers. • 100-130€/nuit • <a href="http://gite-larigaudiere.com" target="_blank">gite-larigaudiere.com</a></p>
+                    <p class="hebergement-details">Le Theil-de-Bretagne • Gîte entier • 8 pers. (4 ch.) • 100-130€/nuit • gite-larigaudiere.com</p>
                 </div>
                 <div class="hebergement-item">
                     <span class="hebergement-name">Chambre à la ferme</span>
-                    <p class="hebergement-details">Torcé • Chambres chez l'habitant • 10 pers. (5 ch.) • 55-70€/ch. • Booking.com</p>
+                    <p class="hebergement-details">Torcé • Chambres d'hôtes • 10 pers. (5 ch.) • 55-70€/ch. • Airbnb</p>
                 </div>
             </div>
 
-            <!-- Modérément proche (10-15 min) -->
+            <!-- 10-15 minutes -->
             <div class="hebergement-category fade-in">
-                <h3>🏡 Modérément proche (10-15 minutes)</h3>
+                <h3>🏘️ À 10-15 minutes</h3>
                 <div class="hebergement-item">
                     <span class="hebergement-name">Le Moulin de Bretigneul</span>
-                    <p class="hebergement-details">St-Aubin-des-Landes • Chambre d'hôtes • 6 pers. (2 ch.) • 70-85€/nuit (pdj inclus) • chambres-hotes.fr</p>
+                    <p class="hebergement-details">Saint-Aubin-des-Landes • Gîte entier • 6 pers. (3 ch.) • 70-85€/nuit • Airbnb</p>
                 </div>
                 <div class="hebergement-item">
                     <span class="hebergement-name">Petite maison campagne</span>
@@ -1238,70 +1642,22 @@
                     <span class="hebergement-name">Gîte Ker Corsica</span>
                     <p class="hebergement-details">Retiers • Gîte + piscine • 6-8 pers. (3 ch.) • 115€/nuit (~800€/sem) • Gîtes de France</p>
                 </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">Le Pavillon du Parc</span>
-                    <p class="hebergement-details">Retiers • Logement entier • 4-6 pers. • 90-100€/nuit • Airbnb</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">Un Bibou de Campagne</span>
-                    <p class="hebergement-details">Le Theil-de-Bretagne • Appartement • 4 pers. • 50-60€/nuit • gites.fr</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">L'Étape du Theil</span>
-                    <p class="hebergement-details">Le Theil-de-Bretagne • Appartement • 4 pers. • 50-65€/nuit • Booking.com</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">Biologite</span>
-                    <p class="hebergement-details">Argentré-du-Plessis • Ch. d'hôtes (ferme bio) • Ch. + appart • 55-65€/nuit (pdj inclus) • Booking.com</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">La Clé des Champs</span>
-                    <p class="hebergement-details">Martigné-Ferchaud • Gîte + Ch. d'hôtes • 4-6 pers. • 85-120€/nuit • Gîtes de France</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">Chambre La Boulière</span>
-                    <p class="hebergement-details">Martigné-Ferchaud • Chambre d'hôtes • 2-4 pers. • 60-70€/nuit • chambresdhotes.org</p>
-                </div>
             </div>
 
             <!-- 15-20 minutes -->
             <div class="hebergement-category fade-in">
                 <h3>🏠 À 15-20 minutes</h3>
                 <div class="hebergement-item">
-                    <span class="hebergement-name">Gîte Aux Champs des Oiseaux</span>
-                    <p class="hebergement-details">La Guerche-de-Bretagne • Gîte entier • 6-8 pers. • 70-100€/nuit • Gîtes de France 35</p>
-                </div>
-                <div class="hebergement-item">
                     <span class="hebergement-name">Jolie maison piscine + Spa</span>
                     <p class="hebergement-details">La Guerche-de-Bretagne • Villa entière • 8 pers. (4 ch.) • 175€/nuit • Airbnb</p>
                 </div>
                 <div class="hebergement-item">
                     <span class="hebergement-name">Domaine de la Clotière</span>
-                    <p class="hebergement-details">La Guerche-de-Bretagne • Chambre d'hôtes • 2-4 pers./ch. • 85-100€/nuit (pdj inclus) • Booking.com</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">Studio "Superb"</span>
-                    <p class="hebergement-details">La Guerche-de-Bretagne • Studio • 2 pers. • 50-60€/nuit • Airbnb</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">Appartement 2 chambres</span>
-                    <p class="hebergement-details">La Guerche-de-Bretagne • Appartement • 4 pers. • 70-90€/nuit • Airbnb</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">Maison 5 ch. + jacuzzi</span>
-                    <p class="hebergement-details">Rannée • Gîte entier • 10 pers. (5 ch.) • 150-200€/nuit • Airbnb</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">Au Presbytère de Dagmar</span>
-                    <p class="hebergement-details">Erbrée • Chambre d'hôtes • 3 chambres • 65-80€/nuit (pdj inclus) • Booking.com</p>
+                    <p class="hebergement-details">La Guerche-de-Bretagne • Chambre d'hôtes • 2-4 pers./ch. • 85-100€/nuit • Booking.com</p>
                 </div>
                 <div class="hebergement-item">
                     <span class="hebergement-name">Château de la Fontenelle</span>
                     <p class="hebergement-details">Argentré-du-Plessis • Ch. d'hôtes de charme • 95€/nuit (pdj inclus) • Contact direct</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">La Suite de l'Elixir</span>
-                    <p class="hebergement-details">Argentré-du-Plessis • Suite / Love room • 2 pers. • 80-100€/nuit • Booking.com</p>
                 </div>
             </div>
 
@@ -1313,36 +1669,12 @@
                     <p class="hebergement-details">La Guerche-de-Bretagne • Chambres doubles • 50-60€/nuit • Booking.com</p>
                 </div>
                 <div class="hebergement-item">
-                    <span class="hebergement-name">Hôtel au Pont d'Anjou</span>
-                    <p class="hebergement-details">La Guerche-de-Bretagne • Hôtel-restaurant • 9 chambres • 55-70€/nuit • Booking.com</p>
-                </div>
-                <div class="hebergement-item">
                     <span class="hebergement-name">Ibis Vitré Centre</span>
                     <p class="hebergement-details">Vitré • Hôtel 2* • Chambres doubles • 65-85€/nuit • Booking.com</p>
                 </div>
                 <div class="hebergement-item">
-                    <span class="hebergement-name">Hôtel du Château</span>
-                    <p class="hebergement-details">Vitré • Hôtel 2* • Chambres doubles • 55-75€/nuit • Booking.com</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">Hôtel Le Petit Billot</span>
-                    <p class="hebergement-details">Vitré • Hôtel 2* • Chambres doubles • 55€/nuit • Booking.com</p>
-                </div>
-                <div class="hebergement-item">
                     <span class="hebergement-name">Magic Hôtel & Spa 4*</span>
                     <p class="hebergement-details">Vitré • Hôtel 4* avec spa • Chambres doubles • 155€/nuit • Weekendesk</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">L'Acanthe Hôtel</span>
-                    <p class="hebergement-details">Erbrée • Hôtel 2* • Chambres doubles • 50-70€/nuit • Booking.com</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">Brit Hotel Au Pays de Vitré</span>
-                    <p class="hebergement-details">Étrelles • Hôtel 3* • Chambres doubles • 70-90€/nuit • Booking.com</p>
-                </div>
-                <div class="hebergement-item">
-                    <span class="hebergement-name">Cottage SPA + SAUNA</span>
-                    <p class="hebergement-details">Vitré • Gîte entier • 2-4 pers. • 100-130€/nuit • Booking.com</p>
                 </div>
             </div>
         </div>
@@ -1363,23 +1695,46 @@
             <div class="contact-card fade-in">
                 <h3>Alix</h3>
                 <a href="tel:0662208142">📞 06 62 20 81 42</a>
-                <a href="/cdn-cgi/l/email-protection#43222f2a3b6d3731222d03242e222a2f6d202c2e">✉️ <span class="__cf_email__" data-cfemail="6405080d1c4a1016050a240309050d084a070b09">[email&#160;protected]</span></a>
+                <a href="mailto:alix.tran@gmail.com">✉️ alix.tran@gmail.com</a>
             </div>
             <div class="contact-card fade-in">
                 <h3>Julien</h3>
                 <a href="tel:0672034313">📞 06 72 03 43 13</a>
-                <a href="/cdn-cgi/l/email-protection#056f70696c606b2b71707364666d60456268646c692b666a68">✉️ <span class="__cf_email__" data-cfemail="c3a9b6afaaa6adedb7b6b5a2a0aba683a4aea2aaafeda0acae">[email&#160;protected]</span></a>
+                <a href="mailto:julien.tuvache@gmail.com">✉️ julien.tuvache@gmail.com</a>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>Alix & Julien 💕 27 août 2016 - 2026</p>
+        <p>Alix & Julien 💚 27 août 2016 - 2026</p>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        // Compte à rebours
+    <!-- Toast notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        const CONFIG = {
+            // Uploadcare public key (à remplacer par le tien)
+            UPLOADCARE_PUBLIC_KEY: '752a38d01fd5a908ae85', // TODO: Remplacer par ta vraie clé
+            
+            // Google Sheets API (pour la jauge de réponses)
+            // Format: https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/gviz/tq?tqx=out:json
+            GOOGLE_SHEETS_URL: 'https://docs.google.com/spreadsheets/d/1xOgKsgV4pBd-UwbPzwJhsKRS3eI9F_OQRdXSQBq67u0/gviz/tq?tqx=out:json', // TODO: Ajouter l'URL de ton Google Sheet
+            
+            // Nombre total de réponses attendues
+            TOTAL_EXPECTED_RESPONSES: 100,
+            
+            // Stockage local pour les photos (en attendant l'intégration complète)
+            PHOTOS_STORAGE_KEY: 'mariage_photos'
+        };
+
+        // ============================================
+        // COMPTE À REBOURS
+        // ============================================
         function updateCountdown() {
             const eventDate = new Date('2026-08-22T14:00:00').getTime();
             const now = new Date().getTime();
@@ -1401,7 +1756,72 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // Animation au scroll
+        // ============================================
+        // JAUGE DE RÉPONSES
+        // ============================================
+        /*async function updateResponseCount() {
+            // Si pas de Google Sheets configuré, utiliser une valeur de démo
+            if (!CONFIG.GOOGLE_SHEETS_URL) {
+                // Valeur de démonstration
+                const demoCount = 12; // À remplacer dynamiquement
+                updateProgressBar(demoCount);
+                return;
+            }
+
+            try {
+                const response = await fetch(CONFIG.GOOGLE_SHEETS_URL);
+                const text = await response.text();
+                // Parser la réponse Google Sheets
+                const json = JSON.parse(text.substring(47).slice(0, -2));
+                const rowCount = json.table.rows.length;
+                updateProgressBar(rowCount);
+            } catch (error) {
+                console.log('Erreur lors de la récupération des réponses:', error);
+                // Fallback: afficher 0
+                updateProgressBar(0);
+            }
+        }*/
+		async function updateResponseCount() {
+			if (!CONFIG.GOOGLE_SHEETS_URL) {
+				updateProgressBar(0);
+				return;
+			}
+
+			try {
+				// Utiliser un proxy CORS ou JSONP
+				const sheetId = '1xOgKsgV4pBd-UwbPzwJhsKRS3eI9F_OQRdXSQBq67u0';
+				const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Feuille1`;
+				
+				const response = await fetch(url);
+				const text = await response.text();
+				
+				// Google renvoie du JSONP, on extrait le JSON
+				const jsonString = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);/);
+				if (jsonString && jsonString[1]) {
+					const json = JSON.parse(jsonString[1]);
+					const rowCount = json.table.rows.length;
+					updateProgressBar(rowCount);
+				}
+			} catch (error) {
+				console.log('Erreur jauge:', error);
+				updateProgressBar(0);
+			}
+		}		
+
+        function updateProgressBar(count) {
+            const percentage = Math.min((count / CONFIG.TOTAL_EXPECTED_RESPONSES) * 100, 100);
+            document.getElementById('response-progress').style.width = percentage + '%';
+            document.getElementById('response-count').textContent = count;
+        }
+
+        // Mettre à jour la jauge au chargement
+        updateResponseCount();
+        // Rafraîchir toutes les 5 minutes
+        setInterval(updateResponseCount, 300000);
+
+        // ============================================
+        // ANIMATIONS AU SCROLL
+        // ============================================
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -1417,20 +1837,198 @@
 
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        // Gestion du formulaire avec FormSubmit
-        // Note: FormSubmit gère l'envoi, on ajoute juste une confirmation visuelle
+        // ============================================
+        // FORMULAIRE
+        // ============================================
         const form = document.getElementById('rsvp-form');
-        
-        // Définir l'URL de retour après soumission
         const currentUrl = window.location.href.split('?')[0];
         document.querySelector('input[name="_next"]').value = currentUrl + '?success=true';
 
         // Afficher message de succès si retour de FormSubmit
         if (window.location.search.includes('success=true')) {
-            document.getElementById('success-msg').classList.add('show');
-            document.getElementById('rsvp-form').style.display = 'none';
-            // Scroll vers la section inscription
-            document.getElementById('inscription').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('success-message').classList.add('show');
+            form.style.display = 'none';
+            // Mettre à jour la jauge
+            updateResponseCount();
+        }
+
+        // ============================================
+        // UPLOAD DE PHOTOS
+        // ============================================
+        const uploadZone = document.getElementById('upload-zone');
+        const fileInput = document.getElementById('file-input');
+        const uploadBtn = document.getElementById('upload-btn');
+        const uploadProgress = document.getElementById('upload-progress');
+        const uploadProgressFill = document.getElementById('upload-progress-fill');
+        const uploadStatus = document.getElementById('upload-status');
+        const galleryGrid = document.getElementById('gallery-grid');
+        const galleryEmpty = document.getElementById('gallery-empty');
+
+        // Stockage local des photos (pour la démo)
+        let photos = JSON.parse(localStorage.getItem(CONFIG.PHOTOS_STORAGE_KEY) || '[]');
+
+        // Événements pour l'upload
+        uploadBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fileInput.click();
+        });
+
+        uploadZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Drag & drop
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            if (files.length === 0) return;
+
+            uploadProgress.classList.add('active');
+            let uploaded = 0;
+            const total = files.length;
+
+            Array.from(files).forEach((file, index) => {
+                if (!file.type.startsWith('image/')) {
+                    showToast('Seules les images sont acceptées', 'error');
+                    return;
+                }
+
+                // Simuler un upload (en réalité, utiliser Uploadcare)
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const photo = {
+                        id: Date.now() + index,
+                        src: e.target.result,
+                        name: file.name,
+                        date: new Date().toLocaleDateString('fr-FR')
+                    };
+                    
+                    photos.push(photo);
+                    localStorage.setItem(CONFIG.PHOTOS_STORAGE_KEY, JSON.stringify(photos));
+                    
+                    uploaded++;
+                    const progress = (uploaded / total) * 100;
+                    uploadProgressFill.style.width = progress + '%';
+                    uploadStatus.textContent = `Upload: ${uploaded}/${total} photos`;
+
+                    if (uploaded === total) {
+                        setTimeout(() => {
+                            uploadProgress.classList.remove('active');
+                            uploadProgressFill.style.width = '0%';
+                            showToast(`${total} photo(s) ajoutée(s) !`, 'success');
+                            renderGallery();
+                        }, 500);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function renderGallery() {
+            if (photos.length === 0) {
+                galleryEmpty.style.display = 'block';
+                return;
+            }
+
+            galleryEmpty.style.display = 'none';
+            
+            // Vider la galerie (sauf le message vide)
+            const existingItems = galleryGrid.querySelectorAll('.gallery-item');
+            existingItems.forEach(item => item.remove());
+
+            photos.forEach((photo, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${photo.src}" alt="${photo.name}">
+                    <div class="gallery-item-overlay">
+                        ${photo.date}
+                    </div>
+                `;
+                item.addEventListener('click', () => openLightbox(index));
+                galleryGrid.appendChild(item);
+            });
+        }
+
+        // Initialiser la galerie
+        renderGallery();
+
+        // ============================================
+        // LIGHTBOX
+        // ============================================
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+        const lightboxPrev = document.getElementById('lightbox-prev');
+        const lightboxNext = document.getElementById('lightbox-next');
+        let currentPhotoIndex = 0;
+
+        function openLightbox(index) {
+            currentPhotoIndex = index;
+            lightboxImg.src = photos[index].src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function showPrevPhoto() {
+            currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+            lightboxImg.src = photos[currentPhotoIndex].src;
+        }
+
+        function showNextPhoto() {
+            currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+            lightboxImg.src = photos[currentPhotoIndex].src;
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxPrev.addEventListener('click', showPrevPhoto);
+        lightboxNext.addEventListener('click', showNextPhoto);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        // Navigation clavier
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') showPrevPhoto();
+            if (e.key === 'ArrowRight') showNextPhoto();
+        });
+
+        // ============================================
+        // TOAST NOTIFICATIONS
+        // ============================================
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
     </script>
 </body>
