@@ -1378,8 +1378,9 @@
                 <div style="background: var(--creme-fonce); border-radius: 15px; padding: 3rem; margin-bottom: 1.5rem;">
                     <!-- <p style="color: var(--brun-terre); font-style: italic;">🗺️ Plan à venir...</p>-->
                     <!-- EMPLACEMENT POUR LE PLAN : remplacer ce bloc par une image -->
-                    <img src="images/plan-lieu.png" alt="Plan du lieu" style="max-width: 100%; border-radius: 10px;"> 
-                </div>
+                    <img src="images/plan-lieu.png" alt="Plan du lieu" style="max-width: 100%; border-radius: 10px;" onclick="openPlanLightbox()"> 
+					<p class="plan-caption">👆 Cliquez pour agrandir</p>
+                </div>				
 <!--                 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-top: 1rem;">
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
                         <span style="font-size: 1.5rem;">🎉</span>
@@ -1529,6 +1530,14 @@
             <button class="lightbox-nav lightbox-next" id="lightbox-next">&#10095;</button>
         </div>
     </div>
+	
+	<!-- Lightbox pour le plan -->
+	<div class="lightbox" id="plan-lightbox">
+		<div class="lightbox-content" style="max-width: 95%; max-height: 95%;">
+			<button class="lightbox-close" onclick="closePlanLightbox()">&times;</button>
+			<img src="images/plan-lieu.png" alt="Plan du Petit Monbouan" style="max-width: 100%; max-height: 90vh;">
+		</div>
+	</div>	
 
     <!-- Activités -->
     <section id="activites">
@@ -2009,6 +2018,30 @@
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) closeLightbox();
         });
+		
+		// ============================================
+		// LIGHTBOX PLAN DU LIEU
+		// ============================================
+		function openPlanLightbox() {
+			document.getElementById('plan-lightbox').classList.add('active');
+			document.body.style.overflow = 'hidden';
+		}
+
+		function closePlanLightbox() {
+			document.getElementById('plan-lightbox').classList.remove('active');
+			document.body.style.overflow = '';
+		}
+
+		// Fermer avec Escape ou clic extérieur
+		document.getElementById('plan-lightbox').addEventListener('click', (e) => {
+			if (e.target.id === 'plan-lightbox') closePlanLightbox();
+		});
+
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && document.getElementById('plan-lightbox').classList.contains('active')) {
+				closePlanLightbox();
+			}
+		});		
 
         // Navigation clavier
         document.addEventListener('keydown', (e) => {
